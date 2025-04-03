@@ -5,7 +5,7 @@ import com.exittest.exit_test_backend.enums.Roles;
 import com.exittest.exit_test_backend.model.User;
 import com.exittest.exit_test_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public User registerUser(RegistrationDto userDto) {
         if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be null or empty");
@@ -26,7 +28,7 @@ public class UserService {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encoder.encode(userDto.getPassword()));
         if (userDto.getRole().equalsIgnoreCase("Admin")){
             user.setRole(Roles.ADMIN);
         }else {
