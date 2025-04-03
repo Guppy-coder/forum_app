@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,18 +24,18 @@ public class SecurityConfig {
 
     // custom security filter chain
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(customizer -> customizer.disable()) //disabled CSRF for requests
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults()) // for browser login
-                .httpBasic(Customizer.withDefaults()) // for any rest client login
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // make request stateless
-                // server does not keep track of cookies
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (only safe for token-based authentication)
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/auth/register", "/api/auth/login").permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
+                .formLogin(AbstractHttpConfigurer::disable) // Disable form-based login
+                .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic authentication
                 .build();
-
-        }
+    }
 
     // used to authenticate user that is in database
     @Bean
