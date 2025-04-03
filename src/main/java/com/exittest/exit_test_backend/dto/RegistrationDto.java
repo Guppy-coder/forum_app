@@ -1,6 +1,5 @@
 package com.exittest.exit_test_backend.dto;
 
-import com.exittest.exit_test_backend.enums.Roles;
 import org.springframework.stereotype.Component;
 
 @Component
