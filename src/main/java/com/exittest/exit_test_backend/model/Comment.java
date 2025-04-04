@@ -5,15 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 @Setter
 @Getter
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Long userId;
     String description;
     int likes;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 }

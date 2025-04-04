@@ -8,19 +8,31 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "question")
 @Getter
 @Setter
 public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "question_id")
     Long id;
+    private String title;
+    private String description;
+    @ElementCollection
+    private List<String> tags;
+    private Date date;
+    private int likes;
+    @Setter
+    private boolean state;
 
-    String title;
-    String description;
-    List<String> tags;
-    Date date;
     @Column(name = "product_code")
     String productCode;
+
+    @OneToMany(mappedBy = "question")
+    private List<Comment> comments;
+
+    public boolean getState(){
+        return this.state;
+    }
 }
