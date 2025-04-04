@@ -8,6 +8,7 @@ import com.exittest.exit_test_backend.model.User;
 import com.exittest.exit_test_backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -51,14 +51,18 @@ public class AuthController {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE) // Explicitly declare JSON
     private ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequest){
-        Optional<User> userOpt = userService.findByEmail(loginRequest.getUsername());
-        if(userOpt.isEmpty()){
+        System.out.println("finding user...");
+        User userOpt = userService.findByUsername(loginRequest.getUsername());
+        System.out.println("user found.");
+        if(userOpt == null){
            return ResponseEntity.badRequest().body("Invalid Credentials");
         }
-        String token = "sdfghjkl;lkijuhygtfds";
 
-        return ResponseEntity.ok(new AuthResponseDto(token));
+        String token = userService.verify(loginRequest);
+        if(userService.verify(loginRequest) != null) return ResponseEntity.ok(new AuthResponseDto(token));
+
+        return ResponseEntity.badRequest().body("user not found");
     }
 }
