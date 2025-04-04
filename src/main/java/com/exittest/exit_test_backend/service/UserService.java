@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class UserService {
     }
 
     public String verify(LoginRequestDto loginRequest) {
-        Authentication authentication = authManager.authenticate(
+        authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
