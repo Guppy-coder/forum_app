@@ -1,0 +1,55 @@
+<!-- HTML Template -->
+<div class="home-container">
+    <div class="search-container">
+      <h2>Search</h2>
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          placeholder="Enter your search query..."
+          (keyup.enter)="onSearch()"
+        >
+        <button (click)="onSearch()" [disabled]="!searchQuery.trim() || isLoading">
+          <span *ngIf="!isLoading">Search</span>
+          <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+      </div>
+      <div class="post-container" style="text-align: right; padding: 10px;">
+        <a href="/post" class="btn action-btn btn-lg px-4 shadow-sm">Start a post</a>
+      </div>
+
+      <div (click)="logout()" class="logout-container" style="text-align: right; padding: 10px;">
+        <a class="btn action-btn btn-lg px-4 shadow-sm">Logout</a>
+      </div>
+    </div>
+  
+    <!-- Search Results Preview -->
+    <div *ngIf="searchResults.length > 0" class="results-preview">
+      <h4 class="results-heading">Posts</h4>
+      <div class="question-list">
+        <div *ngFor="let question of searchResults" class="question-card" (click) = "navigateToQuestion(question.id)">
+          <div class="card-body">
+            <h4>{{ question.title }}</h4>
+            <p class="question-body">{{ question.description }}</p>
+            <div class="question-meta">
+              <span class="product-code">{{"Product Code: " +question.productCode }}</span>
+              <span class="date">{{"Date: " + question.date }}</span>
+              <span class="author">{{"User: " + question.userEmail }}</span>
+              <span class="status">{{"Question Status: " + question.status }}</span>
+              <span class="tags">
+                <span *ngFor="let tag of question.tags" class="tag">{{ " " + tag }}</span>
+              </span>
+              <button class="action-btn" (click)="likeQuestion(question.id)">
+                <i class="material-icons">thumb_up</i>
+                Like <span *ngIf="question.likes > 0">({{ question.likes }})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="searchResults.length === 0">
+      <h4 style="text-align: center;"> No Posts </h4>
+    </div>
+  </div>
+  
