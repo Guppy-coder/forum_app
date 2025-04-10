@@ -1,0 +1,68 @@
+.landing-card {
+    border-radius: 16px;
+    background: linear-gradient(145deg, #1e1e1e, #2c2c2c);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .landing-card:hover {
+    transform: scale(1.01);
+  }
+  
+  .card-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0f7fa;
+    letter-spacing: 1px;
+  }
+  
+  .btn {
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 2rem;
+  }
+  
+  .stat-item {
+    text-align: center;
+    animation: fadeIn 1s ease forwards;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+    color: #17a2b8;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #bbb;
+  }
+  
+  .stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

@@ -1,0 +1,42 @@
+<div *ngIf="question" class="question-container">
+
+    <div class="question-card">
+      <h2 class="question-title">{{ question.title }}</h2>
+      <p class="question-body">{{ question.description }}</p>
+  
+      <div class="question-meta">
+        <span class="meta-item"><strong>Product Code:</strong> {{ question.productCode }}</span>
+        <span class="meta-item"><strong>Status:</strong> {{ question.status ? 'Open' : 'Closed' }}</span>
+        <span class="meta-item"><strong>Posted by:</strong> {{ question.userEmail }}</span>
+        <span class="meta-item"><strong>Date:</strong> {{ question.date }}</span>
+      </div>
+  
+      <div class="question-tags">
+        <span *ngFor="let label of question.tags" class="tag">{{ label }}</span>
+      </div>
+
+      <app-comment [questionId]="question.id"></app-comment>
+  
+      <div class="question-actions">
+        <button (click)="likeQuestion(question.id)" class="like-btn">
+          👍 Like ({{ question.likes }})
+        </button>
+      </div>
+    </div>
+  
+    <div class="comments-section">
+      <h3>Comments ({{ question.comments.length }})</h3>
+  
+      <div *ngIf="question.comments.length === 0">
+        <p class="no-comments">No comments yet.</p>
+      </div>
+  
+      <div *ngFor="let comment of question.comments" class="comment">
+        <p class="comment-text">{{ comment.description }}</p>
+        <div class="comment-meta">
+          <span>{{ comment.userId }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
